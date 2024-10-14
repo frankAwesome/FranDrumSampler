@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio Version 17
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FranDrumSampler - Standalone Plugin", "FranDrumSampler_StandalonePlugin.vcxproj", "{9CAB1E20-C022-6316-855D-F2D85FF3808C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{71D2A420-C080-FD7D-35CA-5FB725018310} = {71D2A420-C080-FD7D-35CA-5FB725018310}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FranDrumSampler - VST3", "FranDrumSampler_VST3.vcxproj", "{79731E6C-9ABD-3C7B-904C-0DCC970475B5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{71D2A420-C080-FD7D-35CA-5FB725018310} = {71D2A420-C080-FD7D-35CA-5FB725018310}
+		{05B76BFE-E7B6-D6A9-B50D-171F95F61303} = {05B76BFE-E7B6-D6A9-B50D-171F95F61303}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FranDrumSampler - Shared Code", "FranDrumSampler_SharedCode.vcxproj", "{71D2A420-C080-FD7D-35CA-5FB725018310}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FranDrumSampler - VST3 Manifest Helper", "FranDrumSampler_VST3ManifestHelper.vcxproj", "{05B76BFE-E7B6-D6A9-B50D-171F95F61303}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{79731E6C-9ABD-3C7B-904C-0DCC970475B5}.Debug|x64.ActiveCfg = Debug|x64
+		{79731E6C-9ABD-3C7B-904C-0DCC970475B5}.Debug|x64.Build.0 = Debug|x64
+		{79731E6C-9ABD-3C7B-904C-0DCC970475B5}.Release|x64.ActiveCfg = Release|x64
+		{79731E6C-9ABD-3C7B-904C-0DCC970475B5}.Release|x64.Build.0 = Release|x64
+		{9CAB1E20-C022-6316-855D-F2D85FF3808C}.Debug|x64.ActiveCfg = Debug|x64
+		{9CAB1E20-C022-6316-855D-F2D85FF3808C}.Debug|x64.Build.0 = Debug|x64
+		{9CAB1E20-C022-6316-855D-F2D85FF3808C}.Release|x64.ActiveCfg = Release|x64
+		{9CAB1E20-C022-6316-855D-F2D85FF3808C}.Release|x64.Build.0 = Release|x64
+		{71D2A420-C080-FD7D-35CA-5FB725018310}.Debug|x64.ActiveCfg = Debug|x64
+		{71D2A420-C080-FD7D-35CA-5FB725018310}.Debug|x64.Build.0 = Debug|x64
+		{71D2A420-C080-FD7D-35CA-5FB725018310}.Release|x64.ActiveCfg = Release|x64
+		{71D2A420-C080-FD7D-35CA-5FB725018310}.Release|x64.Build.0 = Release|x64
+		{05B76BFE-E7B6-D6A9-B50D-171F95F61303}.Debug|x64.ActiveCfg = Debug|x64
+		{05B76BFE-E7B6-D6A9-B50D-171F95F61303}.Debug|x64.Build.0 = Debug|x64
+		{05B76BFE-E7B6-D6A9-B50D-171F95F61303}.Release|x64.ActiveCfg = Release|x64
+		{05B76BFE-E7B6-D6A9-B50D-171F95F61303}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
