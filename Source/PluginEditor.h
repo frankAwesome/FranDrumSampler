@@ -29,5 +29,7 @@ private:
     // access the processor object that created it.
     FranDrumSamplerAudioProcessor& audioProcessor;
 
+    juce::MidiKeyboardComponent midiKeyboard;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FranDrumSamplerAudioProcessorEditor)
 };
