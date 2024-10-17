@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="B0vNzj" name="FranDrumSampler" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginWantsMidiIn"
+              pluginVST3Category="Instrument">
   <MAINGROUP id="Hn85OZ" name="FranDrumSampler">
     <GROUP id="{C13DDC07-200C-FA90-3E05-E1C56AE897B7}" name="Source">
       <FILE id="FQDUYn" name="PluginProcessor.cpp" compile="1" resource="0"
