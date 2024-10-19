@@ -152,18 +152,21 @@ void FranDrumSamplerAudioProcessor::processBlock(juce::AudioBuffer<float>& buffe
 
         if (message.isNoteOn() && message.getNoteNumber() == 60) // MIDI note 60 is C3
         {
-            // Start playback if C3 is pressed
-            if (!transportSource.isPlaying())
-            {
-                transportSource.setPosition(0.0); // Start from the beginning
-                transportSource.start();
-            }
+            //transportSource.stop();
+            transportSource.setPosition(0.0); 
+            transportSource.start();
+
+            //if (!transportSource.isPlaying())
+            //{
+            //    transportSource.setPosition(0.0);
+            //    transportSource.start();
+            //}
         }
-        else if (message.isNoteOff() && message.getNoteNumber() == 60)
-        {
-            // Stop playback when C3 is released
-            transportSource.stop();
-        }
+        //else if (message.isNoteOff() && message.getNoteNumber() == 60)
+        //{
+        //    // Stop playback when C3 is released
+        //    transportSource.stop();
+        //}
     }
 
     // Resize the internal buffer if needed
