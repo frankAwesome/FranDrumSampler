@@ -22,10 +22,15 @@ FranDrumSamplerAudioProcessor::FranDrumSamplerAudioProcessor()
                        )
 #endif
 {
+    formatManager.registerBasicFormats();
+
+    juce::String waveFilePath = "C:\/2.WAV";
+    loadWaveFile(waveFilePath);
 }
 
 FranDrumSamplerAudioProcessor::~FranDrumSamplerAudioProcessor()
 {
+    transportSource.setSource(nullptr);
 }
 
 //==============================================================================
@@ -95,6 +100,9 @@ void FranDrumSamplerAudioProcessor::prepareToPlay (double sampleRate, int sample
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+
+    transportSource.prepareToPlay(samplesPerBlock, sampleRate);
+
 }
 
 void FranDrumSamplerAudioProcessor::releaseResources()
@@ -129,34 +137,57 @@ bool FranDrumSamplerAudioProcessor::isBusesLayoutSupported (const BusesLayout& l
 }
 #endif
 
-void FranDrumSamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void FranDrumSamplerAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-    juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
+    // Clear the audio buffer if necessary
+    buffer.clear();
 
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // This is here to avoid people getting screaming feedback
-    // when they first compile a plugin, but obviously you don't need to keep
-    // this code if your algorithm always overwrites all the output channels.
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
+    // Let the MidiKeyboardState process the MIDI buffer
+    keyboardState.processNextMidiBuffer(midiMessages, 0, buffer.getNumSamples(), true);
 
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    // Process incoming MIDI messages to trigger playback
+    for (const auto metadata : midiMessages)
     {
-        auto* channelData = buffer.getWritePointer (channel);
+        auto message = metadata.getMessage();
 
-        // ..do something to the data...
+        if (message.isNoteOn() && message.getNoteNumber() == 60) // MIDI note 60 is C3
+        {
+            // Start playback if C3 is pressed
+            if (!transportSource.isPlaying())
+            {
+                transportSource.setPosition(0.0); // Start from the beginning
+                transportSource.start();
+            }
+        }
+        else if (message.isNoteOff() && message.getNoteNumber() == 60)
+        {
+            // Stop playback when C3 is released
+            transportSource.stop();
+        }
+    }
+
+    // Resize the internal buffer if needed
+    if (internalBuffer.getNumSamples() != buffer.getNumSamples())
+    {
+        internalBuffer.setSize(buffer.getNumChannels(), buffer.getNumSamples(), false, true, true);
+    }
+
+    // Clear the internal buffer before processing
+    internalBuffer.clear();
+
+    // Provide the transport source with the audio block information using the internal buffer
+    juce::AudioSourceChannelInfo channelInfo(internalBuffer);
+    transportSource.getNextAudioBlock(channelInfo);
+
+    // Copy from the internal buffer to the output buffer
+    for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
+    {
+        buffer.addFrom(channel, 0, internalBuffer, channel, 0, buffer.getNumSamples());
     }
 }
+
+
+
 
 //==============================================================================
 bool FranDrumSamplerAudioProcessor::hasEditor() const
@@ -182,6 +213,30 @@ void FranDrumSamplerAudioProcessor::setStateInformation (const void* data, int s
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
 }
+
+void FranDrumSamplerAudioProcessor::loadWaveFile(const juce::File& file)
+{
+    auto* reader = formatManager.createReaderFor(file);
+
+    // Check if reader is null or if the sample rate is zero
+    if (reader == nullptr)
+    {
+        DBG("Failed to create reader for the file: " << file.getFullPathName());
+        return; // Exit if the file cannot be read
+    }
+
+    if (reader->sampleRate <= 0.0)
+    {
+        DBG("Sample rate is zero or negative for file: " << file.getFullPathName());
+        delete reader; // Clean up the reader if necessary
+        return; // Exit if the sample rate is invalid
+    }
+
+    auto newSource = std::make_unique<juce::AudioFormatReaderSource>(reader, true);
+    transportSource.setSource(newSource.get(), 0, nullptr, reader->sampleRate);
+    readerSource.reset(newSource.release());
+}
+
 
 //==============================================================================
 // This creates new instances of the plugin..

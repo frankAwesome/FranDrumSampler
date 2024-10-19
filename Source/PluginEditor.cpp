@@ -18,6 +18,8 @@ FranDrumSamplerAudioProcessorEditor::FranDrumSamplerAudioProcessorEditor(FranDru
 
 
     addAndMakeVisible(midiKeyboard);
+    midiKeyboard.setMidiChannel(1);
+
     setSize(600, 400);
 }
 

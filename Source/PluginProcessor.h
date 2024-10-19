@@ -53,11 +53,19 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    void loadWaveFile (const juce::File& file);
+
     juce::MidiKeyboardState keyboardState;
 
 private:
     //==============================================================================
+    juce::AudioFormatManager formatManager;
+    std::unique_ptr<juce::AudioFormatReaderSource> readerSource;
+    juce::AudioTransportSource transportSource;
+    std::unique_ptr<juce::ResamplingAudioSource> resamplingSource;
 
+    juce::AudioBuffer<float> internalBuffer; // Your internal buffer
+    int bufferSize = 0; // Track the buffer size
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FranDrumSamplerAudioProcessor)
 };
