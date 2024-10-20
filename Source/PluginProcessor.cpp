@@ -36,8 +36,9 @@ FranDrumSamplerAudioProcessor::FranDrumSamplerAudioProcessor()
     juce::WavAudioFormat wavFormat;
 
     std::unique_ptr<juce::AudioFormatReader> audioReader(wavFormat.createReaderFor(createSamplesInputStream("C:/1.wav").release(), true));
-
     std::unique_ptr<juce::AudioFormatReader> audioReaderSnare(wavFormat.createReaderFor(createSamplesInputStream("C:/3.wav").release(), true));
+    std::unique_ptr<juce::AudioFormatReader> audioReaderHat(wavFormat.createReaderFor(createSamplesInputStream("C:/4.wav").release(), true));
+    
 
     juce::BigInteger allNotes;
     allNotes.setRange(60, 1, true);
@@ -49,7 +50,7 @@ FranDrumSamplerAudioProcessor::FranDrumSamplerAudioProcessor()
         60,            // root midi note
         0.0,           // attack time (sec)
         0.1,           // release time (sec)
-        10.0           // maximum sample length (sec)
+        2.0           // maximum sample length (sec)
     ));
 
 
@@ -58,13 +59,29 @@ FranDrumSamplerAudioProcessor::FranDrumSamplerAudioProcessor()
     allNotesSnare.setRange(62, 1, true);
 
     //mSampledInstrument.clearSounds();
-    mSampledInstrument.addSound(new juce::SamplerSound("vox",         // name
+    mSampledInstrument.addSound(new juce::SamplerSound("vox2",         // name
         *audioReaderSnare,  // source
         allNotesSnare,      // midi notes range
         62,            // root midi note
         0.0,           // attack time (sec)
         0.1,           // release time (sec)
-        10.0           // maximum sample length (sec)
+        2.0           // maximum sample length (sec)
+    ));
+
+
+    
+
+    juce::BigInteger allNotesHat;
+    allNotesHat.setRange(64, 1, true);
+
+    //mSampledInstrument.clearSounds();
+    mSampledInstrument.addSound(new juce::SamplerSound("vox3",         // name
+        *audioReaderHat,  // source
+        allNotesHat,      // midi notes range
+        64,            // root midi note
+        0.0,           // attack time (sec)
+        0.1,           // release time (sec)
+        2.0           // maximum sample length (sec)
     ));
 }
 
