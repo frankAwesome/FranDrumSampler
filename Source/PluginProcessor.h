@@ -67,5 +67,9 @@ private:
     juce::AudioBuffer<float> internalBuffer; // Your internal buffer
     int bufferSize = 0; // Track the buffer size
 
+
+    juce::Synthesiser mSampledInstrument;
+    const int mNumVoices{ 16 };
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FranDrumSamplerAudioProcessor)
 };
