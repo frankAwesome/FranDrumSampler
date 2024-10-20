@@ -32,6 +32,8 @@ private:
     juce::MidiKeyboardState keyboardState;
     juce::MidiKeyboardComponent midiKeyboard; 
 
+    juce::Image backgroundImage;
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FranDrumSamplerAudioProcessorEditor)
 };

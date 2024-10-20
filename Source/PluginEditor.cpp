@@ -20,7 +20,9 @@ FranDrumSamplerAudioProcessorEditor::FranDrumSamplerAudioProcessorEditor(FranDru
     addAndMakeVisible(midiKeyboard);
     midiKeyboard.setMidiChannel(1);
 
-    setSize(600, 400);
+    backgroundImage = juce::ImageCache::getFromFile(juce::File("C:\/Users\/User\/Pictures\/3.png"));
+
+    setSize(420, 180);
 }
 
 FranDrumSamplerAudioProcessorEditor::~FranDrumSamplerAudioProcessorEditor()
@@ -30,12 +32,7 @@ FranDrumSamplerAudioProcessorEditor::~FranDrumSamplerAudioProcessorEditor()
 //==============================================================================
 void FranDrumSamplerAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
-    g.setColour (juce::Colours::white);
-    g.setFont (juce::FontOptions (15.0f));
-    g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
+    g.drawImage(backgroundImage, 0, 0, getWidth(), 110, 0, 0, backgroundImage.getWidth(), backgroundImage.getHeight());
 }
 
 void FranDrumSamplerAudioProcessorEditor::resized()
@@ -43,6 +40,6 @@ void FranDrumSamplerAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
     auto area = getLocalBounds();
-    auto keyboardArea = area.removeFromBottom(100);
+    auto keyboardArea = area.removeFromBottom(70);
     midiKeyboard.setBounds(keyboardArea);
 }
